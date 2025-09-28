@@ -31,9 +31,9 @@
                         "How much is 5 + 7 x 3 - 4",
                     ];
                     const answers = [
-                        4,
-                        9,
-                        22
+                        "4",
+                        "9",
+                        "22"
                     ]
                     const score = ref(0);
                     const currentQuestion = ref(0);
@@ -45,11 +45,18 @@
                     const rightAnswer = computed(() => {
                         return answers[currentQuestion.value];
                     });
-                    const areWeDone = computed(() => questions.length === currentQuestion);
-                
+                    const areWeDone = computed(() => questions.length === currentQuestion.value);
+
                     const check = () => {
-                        if (true === true) {
-                            
+                        if (answer.value === rightAnswer.value) {
+                            score.value++;
+                        }
+
+                        answer.value = null;
+                        currentQuestion.value++;
+
+                        if (areWeDone.value) {
+                            clearInterval(interval);
                         }
                     }
 
