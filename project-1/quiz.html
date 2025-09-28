@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Vue 3.4 Template</title>
+        <link rel="stylesheet" href="https://unpkg.com/normalize.css/normalize.css">
+        <style type="text/css">
+            body {
+                font-family: monospace;
+                padding: 20px;
+                font-size: 2em;
+            }
+        </style>
+    <script src="https://unpkg.com/vue@3"></script>
+    </head>
+    <body>
+        <div id="app">
+            <p><a href="./index.html">Back...</a></p>
+            <p v-if="questions.length === completed">Your score: {{ score }}</p>
+            <div v-if="questions.length !== completed">
+                <div v-for="(question, index) of questions" :key="index">
+                    <div v-if="index === completed">
+                        <p>
+                            <label>{{ question.question }}</label>
+                        </p>
+                        <input v-model="question.userAnswer" />
+                        <button @click="completed++">Next</button>
+                    </div>
+                </div>
+            </div>
+            <button @click="reset()" v-if="questions.length === completed">Reset</button>
+        </div>
+        <script>
+            const { createApp, ref, computed } = Vue;
+            const App = {
+              setup() {
+                const questions = ref([
+                    {
+                        question: "How many corners in a triangle?",
+                        correctAnswer: "3",
+                        userAnswer: "",
+                    },
+                    {
+                        question: "What is the legal drinking age in The Netherlands?",
+                        correctAnswer: "18",
+                        userAnswer: "",
+                    },
+                    {
+                        question: "What is your name?",
+                        correctAnswer: "hayo",
+                        userAnswer: "",
+                    }
+                ]);
+                const completed = ref(0);
+                const score = computed(() => {
+                    const correctAnswers = questions.value.filter(question => question.userAnswer === question.correctAnswer);
+                    return correctAnswers.length;
+                });
+
+                return {
+                    questions,
+                    completed,
+                    score,
+                }
+              },
+            };
+
+            createApp(App).mount('#app');
+        </script>
+    </body>
+</html>
